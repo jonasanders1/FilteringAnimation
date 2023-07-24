@@ -6,7 +6,7 @@ import Filter from './components/Filter';
 
 function App() {
 
-  const [popular, setPopular] = useState([]);
+  const [movies, setPopular] = useState([]);
 
   useEffect(()=> {
     fetchPopular();
@@ -23,7 +23,7 @@ function App() {
     <div>
       <Filter />
     <div className='popular-movies'>
-      {popular.map((movie) => {
+      {movies.map((movie) => {
         return <Movie key={movie.id} movie={movie} />
       })}
     </div>
