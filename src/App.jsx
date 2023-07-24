@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import Movie from './components/Movie';
 import Filter from './components/Filter';
-
+import { motion, AnimatePresence } from 'framer-motion';
 function App() {
 
   const [popular, setPopular] = useState([]);
+  const [filtered, setFiltered] = useState([]);
+  const [activeGenre, setActiveGenre] = useState(0)
 
   useEffect(()=> {
     fetchPopular();
@@ -17,16 +19,22 @@ function App() {
     const data = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=419ccf4e6df574acc9c99e54abfd2a04&en-US&page=1`)
     const movies = await data.json()
     setPopular(movies.results)
+    setFiltered(movies.results)
   }
 
   return (
     <div>
-      <Filter />
-    <div className='popular-movies'>
-      {popular.map((movie) => {
-        return <Movie key={movie.id} movie={movie} />
-      })}
-    </div>
+      <Filter popular={popular} setFiltered={setFiltered} activeGenre={activeGenre} setActiveGenre={setActiveGenre}/>
+    <motion.div 
+     
+      layout 
+      className='popular-movies'>
+        <AnimatePresence>
+          {filtered.map((movie) => {
+            return <Movie key={movie.id} movie={movie} />
+          })}
+      </AnimatePresence>
+    </motion.div>
     </div>
   )
 }
